@@ -164,7 +164,25 @@ export const portfolioData = {
         ],
         images: [],
       },
-    ],
+      {
+        icon: "fas fa-car",
+        title: "Rentify Rental Marketplace",
+        role: "Full-Stack Developer",
+        year: "2025",
+        status: "Ongoing",
+        tagline: "A rental marketplace for cars, condos, and just about anything you can rent — built for both hosts and renters.",
+        description:
+          "Rentify is my ongoing marketplace platform that connects property owners and vehicle owners with people who want to rent them. It supports multiple rental categories — cars, condos, equipment, and more — with a shared booking flow, listing management, and secure payment handling. The goal is to make listing and renting anything as simple as posting a classified ad, but with real booking, availability, and payout logic behind it.",
+        techStack: ["React.js", "Spring Boot", "MySQL", "Docker", "CI/CD", "Maya API"],
+        highlights: [
+          "Multi-category rentals: cars, condos, vehicles, and more",
+          "Host dashboard for listing management and availability",
+          "Renter booking flow with date and duration selection",
+          "Secure payment and payout integration",
+          "Review and rating system for hosts and renters",
+        ],
+        images: [],
+      },    ],
   },
 
   experience: {
