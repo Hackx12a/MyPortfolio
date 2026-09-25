@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { portfolioData } from "../data/portfolioData";
+import { useTheme } from "../hooks/useTheme";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const onScroll = () => {
@@ -40,26 +42,37 @@ const Navbar = () => {
           <span>Prince Albert Martinez</span>
         </div>
 
-        <button
-          className="navbar-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <i className={menuOpen ? "fas fa-times" : "fas fa-bars"}></i>
-        </button>
+        <div className="navbar-actions">
+          <ul className={`navbar-links ${menuOpen ? "open" : ""}`}>
+            {portfolioData.navLinks.map((link) => (
+              <li key={link.id}>
+                <button
+                  className={active === link.id ? "active" : ""}
+                  onClick={() => scrollTo(link.id)}
+                >
+                  {link.label}
+                </button>
+              </li>
+            ))}
+          </ul>
 
-        <ul className={`navbar-links ${menuOpen ? "open" : ""}`}>
-          {portfolioData.navLinks.map((link) => (
-            <li key={link.id}>
-              <button
-                className={active === link.id ? "active" : ""}
-                onClick={() => scrollTo(link.id)}
-              >
-                {link.label}
-              </button>
-            </li>
-          ))}
-        </ul>
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          >
+            <i className={theme === "dark" ? "fas fa-sun" : "fas fa-moon"}></i>
+          </button>
+
+          <button
+            className="navbar-toggle"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            <i className={menuOpen ? "fas fa-times" : "fas fa-bars"}></i>
+          </button>
+        </div>
       </div>
     </nav>
   );
