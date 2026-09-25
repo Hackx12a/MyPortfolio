@@ -20,7 +20,7 @@ const Experience = () => {
                 <div>
                   <h3 className="timeline-title">{item.title}</h3>
                   <p className="timeline-company">
-                    {item.company} <span className="dot-sep">Â·</span> {item.location}
+                    {item.company}, {item.location}
                   </p>
                 </div>
                 <span className="timeline-date">{item.date}</span>

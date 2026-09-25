@@ -240,94 +240,127 @@ body::before {
 .hero-meta .fa-circle-check { color: #4ade80; }
 
 /* ==================== AVATAR ==================== */
-.hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
 
 .avatar-stage {
   position: relative;
   width: 100%;
-  max-width: 480px;
-  aspect-ratio: 1 / 1.1;
+  max-width: 520px;
+  aspect-ratio: 1 / 1;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
 }
 
+/* Purple glow behind everything */
 .avatar-glow {
   position: absolute;
-  bottom: 5%; left: 50%;
-  transform: translateX(-50%);
-  width: 85%; aspect-ratio: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 105%;
+  aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124,92,255,0.5) 0%, transparent 65%);
-  filter: blur(50px);
+  background: radial-gradient(circle, rgba(124, 92, 255, 0.5) 0%, transparent 65%);
+  filter: blur(60px);
   z-index: 0;
 }
 
-.hero-media {
-  position: relative;
-  width: 100%; height: 100%;
+/* Brush stroke ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â centered, fills most of the stage */
+.hero-media.brush-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  width: 120%;
+  height: 120%;
+  z-index: 1;
+  pointer-events: none;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
 }
 
+.hero-media.brush-wrapper img.avatar-brush {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 50px rgba(124, 92, 255, 0.35));
+  transition: opacity 0.9s ease, filter 0.9s ease, transform 0.9s ease;
+}
+
+/* Photo ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â SMALLER and centered */
+.hero-media.photo-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 108%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-media.photo-wrapper img.hero-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+  transition: opacity 0.9s ease, filter 0.9s ease, transform 0.9s ease;
+}
+
+/* Loading state */
 .hero-media.loading img {
   opacity: 0;
   filter: blur(20px);
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
 .hero-media.loaded img {
   opacity: 1;
   filter: blur(0);
   transform: scale(1);
-  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), filter 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
 }
 
+/* Pulsing glow while loading */
 .hero-media.loading::before {
   content: "";
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  width: 70%; height: 70%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124,92,255,0.35) 0%, transparent 70%);
-  filter: blur(50px);
+  background: radial-gradient(circle, rgba(124, 92, 255, 0.35) 0%, transparent 70%);
+  filter: blur(40px);
   animation: heroMediaPulse 1.8s ease-in-out infinite;
 }
 
 @keyframes heroMediaPulse {
-  0%, 100% { opacity: 0.5; transform: translate(-50%,-50%) scale(0.9); }
-  50% { opacity: 1; transform: translate(-50%,-50%) scale(1.1); }
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.9); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
 }
 
-.avatar-brush {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%) rotate(-8deg);
-  width: 120%; height: auto; max-width: none;
-  z-index: 1;
-  pointer-events: none;
-  user-select: none;
-}
-
-.hero-avatar-img {
-  position: relative;
-  width: 92%; max-width: 440px;
-  height: auto;
-  object-fit: contain;
-  object-position: center bottom;
-  z-index: 3;
-  filter: drop-shadow(0 25px 45px rgba(0,0,0,0.8));
-}
-
+/* Ring ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â SMALL, positioned around HEAD */
 .avatar-ring {
   position: absolute;
-  top: 6%; left: 50%;
+  top: 14%;
+  left: 50%;
   transform: translateX(-50%);
-  width: 55%; aspect-ratio: 1;
+  width: 78%;
+  aspect-ratio: 1;
   border-radius: 50%;
-  border: 2px dashed rgba(255,255,255,0.35);
+  border: 2px dashed rgba(255, 255, 255, 0.4);
   animation: spinSlow 30s linear infinite;
   z-index: 2;
   pointer-events: none;
@@ -336,9 +369,11 @@ body::before {
 .avatar-ring::before {
   content: "";
   position: absolute;
-  top: -5px; left: 50%;
+  top: -5px;
+  left: 50%;
   transform: translateX(-50%);
-  width: 10px; height: 10px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #7c5cff;
   box-shadow: 0 0 15px #7c5cff;
@@ -349,28 +384,17 @@ body::before {
   to { transform: translateX(-50%) rotate(360deg); }
 }
 
+/* Ground shadow */
 .avatar-shadow {
   position: absolute;
-  bottom: -8px; left: 50%;
+  bottom: 8%;
+  left: 50%;
   transform: translateX(-50%);
-  width: 65%; height: 25px;
-  background: radial-gradient(ellipse, rgba(124,92,255,0.7) 0%, transparent 70%);
+  width: 50%;
+  height: 20px;
+  background: radial-gradient(ellipse, rgba(124, 92, 255, 0.6) 0%, transparent 70%);
   filter: blur(15px);
-}
-
-.scroll-hint {
-  position: absolute;
-  bottom: 2rem; left: 50%;
-  transform: translateX(-50%);
-  color: #6b6b7b;
-  font-size: 1.2rem;
-  animation: bounce 2s ease-in-out infinite;
-  z-index: 2;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translate(-50%,0); }
-  50% { transform: translate(-50%,10px); }
+  z-index: 0;
 }
 
 /* ==================== SECTIONS ==================== */
@@ -769,7 +793,7 @@ body::before {
 .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
 .timeline-title { font-size: 1.15rem; font-weight: 700; color: var(--highlight); margin-bottom: 0.3rem; }
 .timeline-company { color: var(--text-muted); font-size: 0.9rem; }
-.dot-sep { color: var(--purple); margin: 0 0.3rem; }
+
 
 .timeline-date {
   font-size: 0.8rem;

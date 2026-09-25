@@ -49,8 +49,8 @@ const Hero = () => {
           <div className="avatar-stage">
             <div className="avatar-glow"></div>
 
-            {/* Brush stroke â€” fades in when loaded */}
-            <div className={`hero-media ${brushLoaded ? "loaded" : "loading"}`}>
+            {/* Brush stroke layer */}
+            <div className={`hero-media brush-wrapper ${brushLoaded ? "loaded" : "loading"}`}>
               <img
                 src={brushStroke}
                 alt=""
@@ -60,10 +60,11 @@ const Hero = () => {
               />
             </div>
 
+            {/* Ring around head */}
             <div className="avatar-ring"></div>
 
-            {/* Profile photo â€” fades in when loaded */}
-            <div className={`hero-media ${photoLoaded ? "loaded" : "loading"}`}>
+            {/* Photo layer */}
+            <div className={`hero-media photo-wrapper ${photoLoaded ? "loaded" : "loading"}`}>
               <img
                 src={profilePic}
                 alt={hero.name}
@@ -72,6 +73,7 @@ const Hero = () => {
               />
             </div>
 
+            {/* Ground shadow */}
             <div className="avatar-shadow"></div>
           </div>
         </div>
