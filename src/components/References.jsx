@@ -4,7 +4,7 @@ import { portfolioData } from "../data/portfolioData";
 const References = () => {
   const { references } = portfolioData;
   return (
-    <section id="references" className="section">
+    <section id="references" className="section reveal">
       <div className="section-head">
         <span className="section-label">07</span>
         <h2 className="section-title">{references.heading}</h2>

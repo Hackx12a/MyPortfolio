@@ -4,7 +4,7 @@ import { portfolioData } from "../data/portfolioData";
 const Experience = () => {
   const { experience } = portfolioData;
   return (
-    <section id="experience" className="section">
+    <section id="experience" className="section reveal">
       <div className="section-head">
         <span className="section-label">04</span>
         <h2 className="section-title">{experience.heading}</h2>
@@ -20,7 +20,7 @@ const Experience = () => {
                 <div>
                   <h3 className="timeline-title">{item.title}</h3>
                   <p className="timeline-company">
-                    {item.company} <span className="dot-sep">·</span> {item.location}
+                    {item.company} <span className="dot-sep">Â·</span> {item.location}
                   </p>
                 </div>
                 <span className="timeline-date">{item.date}</span>

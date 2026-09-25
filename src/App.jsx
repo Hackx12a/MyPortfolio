@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import { useScrollReveal } from "./hooks/useScrollReveal";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -12,22 +13,26 @@ import References from "./components/References";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
-const App = () => (
-  <div className="app">
-    <Navbar />
-    <main>
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Education />
-      <Certifications />
-      <References />
-      <Contact />
-    </main>
-    <Footer />
-  </div>
-);
+const App = () => {
+  useScrollReveal();
+
+  return (
+    <div className="app">
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Education />
+        <Certifications />
+        <References />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
+  );
+};
 
 export default App;

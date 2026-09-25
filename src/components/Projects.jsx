@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { portfolioData } from "../data/portfolioData";
+import ImageWithLoader from "./ImageWithLoader";
 
 const Projects = () => {
   const { projects } = portfolioData;
@@ -17,12 +18,8 @@ const Projects = () => {
       if (e.key === "Escape") setLightbox(null);
       if (lightbox) {
         const imgs = projects.items[lightbox.projectIdx].images;
-        if (e.key === "ArrowRight") {
-          setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx + 1) % imgs.length });
-        }
-        if (e.key === "ArrowLeft") {
-          setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx - 1 + imgs.length) % imgs.length });
-        }
+        if (e.key === "ArrowRight") setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx + 1) % imgs.length });
+        if (e.key === "ArrowLeft") setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx - 1 + imgs.length) % imgs.length });
       }
     };
     window.addEventListener("keydown", onKey);
@@ -35,7 +32,7 @@ const Projects = () => {
   }, [lightbox]);
 
   return (
-    <section id="projects" className="section">
+    <section id="projects" className="section reveal">
       <div className="section-head">
         <span className="section-label">03</span>
         <h2 className="section-title">{projects.heading}</h2>
@@ -51,7 +48,6 @@ const Projects = () => {
               <div className="project-icon-wrap">
                 <i className={project.icon}></i>
               </div>
-
               <div className="project-heading">
                 <div className="project-meta">
                   <span className="project-status">
@@ -79,9 +75,7 @@ const Projects = () => {
               <ul>
                 {project.highlights.map((h, i) => (
                   <li key={i}>
-                    <span className="check-icon">
-                      <i className="fas fa-check"></i>
-                    </span>
+                    <span className="check-icon"><i className="fas fa-check"></i></span>
                     <span>{h}</span>
                   </li>
                 ))}
@@ -99,7 +93,7 @@ const Projects = () => {
                       onClick={() => setLightbox({ projectIdx: idx, imgIdx: i })}
                       aria-label={`View ${img.caption}`}
                     >
-                      <img src={imageMap[img.src]} alt={img.caption} loading="lazy" />
+                      <ImageWithLoader src={imageMap[img.src]} alt={img.caption} />
                       <div className="thumb-overlay">
                         <span className="thumb-expand">
                           <i className="fas fa-expand"></i>
@@ -115,7 +109,6 @@ const Projects = () => {
         ))}
       </div>
 
-      {/* Lightbox */}
       {lightbox && (
         <div className="lightbox" onClick={() => setLightbox(null)}>
           <button className="lightbox-close" onClick={() => setLightbox(null)} aria-label="Close">
@@ -126,31 +119,25 @@ const Projects = () => {
             <>
               <button
                 className="lightbox-nav lightbox-prev"
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={(e) => { e.stopPropagation();
                   const imgs = projects.items[lightbox.projectIdx].images;
                   setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx - 1 + imgs.length) % imgs.length });
                 }}
                 aria-label="Previous"
-              >
-                <i className="fas fa-chevron-left"></i>
-              </button>
+              ><i className="fas fa-chevron-left"></i></button>
               <button
                 className="lightbox-nav lightbox-next"
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={(e) => { e.stopPropagation();
                   const imgs = projects.items[lightbox.projectIdx].images;
                   setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx + 1) % imgs.length });
                 }}
                 aria-label="Next"
-              >
-                <i className="fas fa-chevron-right"></i>
-              </button>
+              ><i className="fas fa-chevron-right"></i></button>
             </>
           )}
 
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <img
+            <ImageWithLoader
               src={imageMap[projects.items[lightbox.projectIdx].images[lightbox.imgIdx].src]}
               alt={projects.items[lightbox.projectIdx].images[lightbox.imgIdx].caption}
             />

@@ -4,7 +4,7 @@ import { portfolioData } from "../data/portfolioData";
 const Contact = () => {
   const { hero } = portfolioData;
   return (
-    <section id="contact" className="section">
+    <section id="contact" className="section reveal">
       <div className="section-head">
         <span className="section-label">08</span>
         <h2 className="section-title">Get In Touch</h2>

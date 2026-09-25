@@ -4,7 +4,7 @@ import { portfolioData } from "../data/portfolioData";
 const Skills = () => {
   const { skills } = portfolioData;
   return (
-    <section id="skills" className="section">
+    <section id="skills" className="section reveal">
       <div className="section-head">
         <span className="section-label">02</span>
         <h2 className="section-title">{skills.heading}</h2>
