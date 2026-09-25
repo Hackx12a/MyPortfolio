@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { portfolioData } from "../data/portfolioData";
 import profilePic from "../assets/profile.png";
 import brushStroke from "../assets/brush-stroke-final.png";
 
 const Hero = () => {
   const { hero } = portfolioData;
+  const [brushLoaded, setBrushLoaded] = useState(false);
+  const [photoLoaded, setPhotoLoaded] = useState(false);
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
@@ -46,9 +48,30 @@ const Hero = () => {
         <div className="hero-visual">
           <div className="avatar-stage">
             <div className="avatar-glow"></div>
-            <img src={brushStroke} alt="" className="avatar-brush" aria-hidden="true" />
+
+            {/* Brush stroke â€” fades in when loaded */}
+            <div className={`hero-media ${brushLoaded ? "loaded" : "loading"}`}>
+              <img
+                src={brushStroke}
+                alt=""
+                className="avatar-brush"
+                aria-hidden="true"
+                onLoad={() => setBrushLoaded(true)}
+              />
+            </div>
+
             <div className="avatar-ring"></div>
-            <img src={profilePic} alt={hero.name} className="hero-avatar-img" />
+
+            {/* Profile photo â€” fades in when loaded */}
+            <div className={`hero-media ${photoLoaded ? "loaded" : "loading"}`}>
+              <img
+                src={profilePic}
+                alt={hero.name}
+                className="hero-avatar-img"
+                onLoad={() => setPhotoLoaded(true)}
+              />
+            </div>
+
             <div className="avatar-shadow"></div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { portfolioData } from "../data/portfolioData";
 import ImageWithLoader from "./ImageWithLoader";
 
@@ -30,6 +31,57 @@ const Projects = () => {
     document.body.style.overflow = lightbox ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [lightbox]);
+
+  const lightboxContent = lightbox ? (
+    <div className="lightbox" onClick={() => setLightbox(null)}>
+      <button className="lightbox-close" onClick={() => setLightbox(null)} aria-label="Close">
+        <i className="fas fa-times"></i>
+      </button>
+
+      {projects.items[lightbox.projectIdx].images.length > 1 && (
+        <>
+          <button
+            className="lightbox-nav lightbox-prev"
+            onClick={(e) => {
+              e.stopPropagation();
+              const imgs = projects.items[lightbox.projectIdx].images;
+              setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx - 1 + imgs.length) % imgs.length });
+            }}
+            aria-label="Previous"
+          >
+            <i className="fas fa-chevron-left"></i>
+          </button>
+          <button
+            className="lightbox-nav lightbox-next"
+            onClick={(e) => {
+              e.stopPropagation();
+              const imgs = projects.items[lightbox.projectIdx].images;
+              setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx + 1) % imgs.length });
+            }}
+            aria-label="Next"
+          >
+            <i className="fas fa-chevron-right"></i>
+          </button>
+        </>
+      )}
+
+      <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+        <img
+          className="lightbox-img"
+          src={imageMap[projects.items[lightbox.projectIdx].images[lightbox.imgIdx].src]}
+          alt={projects.items[lightbox.projectIdx].images[lightbox.imgIdx].caption}
+        />
+        <div className="lightbox-footer">
+          <p className="lightbox-caption">
+            {projects.items[lightbox.projectIdx].images[lightbox.imgIdx].caption}
+          </p>
+          <span className="lightbox-counter">
+            {lightbox.imgIdx + 1} / {projects.items[lightbox.projectIdx].images.length}
+          </span>
+        </div>
+      </div>
+    </div>
+  ) : null;
 
   return (
     <section id="projects" className="section reveal">
@@ -109,49 +161,8 @@ const Projects = () => {
         ))}
       </div>
 
-      {lightbox && (
-        <div className="lightbox" onClick={() => setLightbox(null)}>
-          <button className="lightbox-close" onClick={() => setLightbox(null)} aria-label="Close">
-            <i className="fas fa-times"></i>
-          </button>
-
-          {projects.items[lightbox.projectIdx].images.length > 1 && (
-            <>
-              <button
-                className="lightbox-nav lightbox-prev"
-                onClick={(e) => { e.stopPropagation();
-                  const imgs = projects.items[lightbox.projectIdx].images;
-                  setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx - 1 + imgs.length) % imgs.length });
-                }}
-                aria-label="Previous"
-              ><i className="fas fa-chevron-left"></i></button>
-              <button
-                className="lightbox-nav lightbox-next"
-                onClick={(e) => { e.stopPropagation();
-                  const imgs = projects.items[lightbox.projectIdx].images;
-                  setLightbox({ ...lightbox, imgIdx: (lightbox.imgIdx + 1) % imgs.length });
-                }}
-                aria-label="Next"
-              ><i className="fas fa-chevron-right"></i></button>
-            </>
-          )}
-
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <ImageWithLoader
-              src={imageMap[projects.items[lightbox.projectIdx].images[lightbox.imgIdx].src]}
-              alt={projects.items[lightbox.projectIdx].images[lightbox.imgIdx].caption}
-            />
-            <div className="lightbox-footer">
-              <p className="lightbox-caption">
-                {projects.items[lightbox.projectIdx].images[lightbox.imgIdx].caption}
-              </p>
-              <span className="lightbox-counter">
-                {lightbox.imgIdx + 1} / {projects.items[lightbox.projectIdx].images.length}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Render lightbox at document.body via portal — escapes all parent styles */}
+      {createPortal(lightboxContent, document.body)}
     </section>
   );
 };
