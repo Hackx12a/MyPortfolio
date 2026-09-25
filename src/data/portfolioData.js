@@ -182,7 +182,8 @@ export const portfolioData = {
           "Review and rating system for hosts and renters",
         ],
         images: [],
-      },,    ],
+      },
+    ],
   },
 
   experience: {
