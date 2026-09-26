@@ -43,6 +43,21 @@ const Design = () => {
   const [lightbox, setLightbox] = useState(null);
   const [guideIndex, setGuideIndex] = useState(0);
   const [showGuide, setShowGuide] = useState(false);
+  const [guideLoading, setGuideLoading] = useState(true);
+
+  // Preload all guideline images once the modal opens
+  useEffect(() => {
+    if (!showGuide) return;
+    guidelineSteps.forEach((step) => {
+      const img = new Image();
+      img.src = step.src;
+    });
+  }, [showGuide]);
+
+  // Reset loading when index changes
+  useEffect(() => {
+    setGuideLoading(true);
+  }, [guideIndex]);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -51,13 +66,13 @@ const Design = () => {
         setShowGuide(false);
       }
       if (showGuide) {
-        if (e.key === "ArrowRight") setGuideIndex((i) => (i + 1) % guidelineSteps.length);
-        if (e.key === "ArrowLeft") setGuideIndex((i) => (i - 1 + guidelineSteps.length) % guidelineSteps.length);
+        if (e.key === "ArrowRight" && !guideLoading) setGuideIndex((i) => (i + 1) % guidelineSteps.length);
+        if (e.key === "ArrowLeft" && !guideLoading) setGuideIndex((i) => (i - 1 + guidelineSteps.length) % guidelineSteps.length);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [showGuide]);
+  }, [showGuide, guideLoading]);
 
   useEffect(() => {
     document.body.style.overflow = lightbox || showGuide ? "hidden" : "";
@@ -65,6 +80,16 @@ const Design = () => {
   }, [lightbox, showGuide]);
 
   const openLightbox = (src, alt) => setLightbox({ src, alt });
+
+  const goNext = () => {
+    if (guideLoading) return;
+    setGuideIndex((i) => (i + 1) % guidelineSteps.length);
+  };
+
+  const goPrev = () => {
+    if (guideLoading) return;
+    setGuideIndex((i) => (i - 1 + guidelineSteps.length) % guidelineSteps.length);
+  };
 
   const lightboxContent = lightbox ? (
     <div className="lightbox" onClick={() => setLightbox(null)}>
@@ -101,7 +126,7 @@ const Design = () => {
             </p>
           </div>
         </div>
-        <button className="btn btn-primary" onClick={() => { setShowGuide(true); setGuideIndex(0); }}>
+        <button className="btn btn-primary" onClick={() => { setShowGuide(true); setGuideIndex(0); setGuideLoading(true); }}>
           <i className="fas fa-play"></i> Open Guidelines Walkthrough
         </button>
       </div>
@@ -173,17 +198,19 @@ const Design = () => {
           </button>
 
           <button
-            className="lightbox-nav lightbox-prev"
-            onClick={(e) => { e.stopPropagation(); setGuideIndex((i) => (i - 1 + guidelineSteps.length) % guidelineSteps.length); }}
+            className={`lightbox-nav lightbox-prev ${guideLoading ? "guide-nav-disabled" : ""}`}
+            onClick={(e) => { e.stopPropagation(); goPrev(); }}
             aria-label="Previous"
+            disabled={guideLoading}
           >
             <i className="fas fa-chevron-left"></i>
           </button>
 
           <button
-            className="lightbox-nav lightbox-next"
-            onClick={(e) => { e.stopPropagation(); setGuideIndex((i) => (i + 1) % guidelineSteps.length); }}
+            className={`lightbox-nav lightbox-next ${guideLoading ? "guide-nav-disabled" : ""}`}
+            onClick={(e) => { e.stopPropagation(); goNext(); }}
             aria-label="Next"
+            disabled={guideLoading}
           >
             <i className="fas fa-chevron-right"></i>
           </button>
@@ -193,7 +220,24 @@ const Design = () => {
               <span className="guide-step-badge">Step {guideIndex + 1} of {guidelineSteps.length}</span>
               <h3 className="guide-title">Dashboard Guidelines</h3>
             </div>
-            <img className="guide-image" src={guidelineSteps[guideIndex].src} alt={`Step ${guideIndex + 1}`} />
+
+            <div className="guide-image-wrap">
+              {guideLoading && (
+                <div className="guide-loader">
+                  <div className="guide-spinner"></div>
+                  <span className="guide-loading-text">Loading image...</span>
+                </div>
+              )}
+              <img
+                key={guideIndex}
+                className={`guide-image ${guideLoading ? "guide-image-hidden" : "guide-image-visible"}`}
+                src={guidelineSteps[guideIndex].src}
+                alt={`Step ${guideIndex + 1}`}
+                onLoad={() => setGuideLoading(false)}
+                onError={() => setGuideLoading(false)}
+              />
+            </div>
+
             <p className="guide-desc">{guidelineSteps[guideIndex].description}</p>
           </div>
         </div>,
